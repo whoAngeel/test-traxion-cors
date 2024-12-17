@@ -28,8 +28,8 @@ function login() {
 			.catch((err) => console.log(err));
 	};
 
-	useEffect(async () => {
-		const response = await fetch(
+	useEffect(() => {
+		fetch(
 			"https://traxion-documentos-gateway-1ctcj88b.uc.gateway.dev/v1/workers",
 			{
 				method: "GET",
@@ -38,11 +38,15 @@ function login() {
 					Authorization: `Bearer ${token}`,
 				},
 			}
-		);
-		if (response.ok) {
-			const data = await response.json();
-			setUsers(data.data);
-		}
+		)
+			.then((res) => {
+				return res.json();
+			})
+			.then((data) => {
+				console.log(data);
+				setUsers(data.users);
+			})
+			.catch((err) => console.log(err));
 	}, [token]);
 
 	/*
@@ -66,6 +70,9 @@ admin1234
 				<button type="submit">Login</button>
 
 				<p>{token}</p>
+				{users.map((user) => {
+					return <p>{user.email}</p>;
+				})}
 			</form>
 		</div>
 	);
