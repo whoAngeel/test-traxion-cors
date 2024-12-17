@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 function login() {
 	const [email, setEmail] = React.useState("");
 	const [password, setPassword] = React.useState("");
 	const [token, setToken] = React.useState("");
+	const [users, setUsers] = React.useState([]);
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		console.log(email, password);
@@ -26,6 +27,24 @@ function login() {
 			})
 			.catch((err) => console.log(err));
 	};
+
+	useEffect(async () => {
+		const response = await fetch(
+			"https://traxion-documentos-gateway-1ctcj88b.uc.gateway.dev/v1/workers",
+			{
+				method: "GET",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+		if (response.ok) {
+			const data = await response.json();
+			setUsers(data.data);
+		}
+	}, [token]);
+
 	/*
 admin1234@example.com
 admin1234
