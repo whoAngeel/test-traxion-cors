@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 function login() {
 	const [email, setEmail] = React.useState("");
 	const [password, setPassword] = React.useState("");
-	const [token, setToken] = React.useState("");
+	const [token, setToken] = React.useState(null);
 	const [users, setUsers] = React.useState([]);
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -29,6 +29,7 @@ function login() {
 	};
 
 	useEffect(() => {
+		if (!token) return;
 		fetch(
 			"https://traxion-documentos-gateway-1ctcj88b.uc.gateway.dev/v1/workers",
 			{
@@ -70,9 +71,14 @@ admin1234
 				<button type="submit">Login</button>
 
 				<p>{token}</p>
-				{users.map((user) => {
-					return <p>{user.email}</p>;
-				})}
+				{token &&
+					users?.length > 0 &&
+					users.map((user) => (
+						<div key={user.email}>
+							<p>{user.name}</p>
+							<p>{user.email}</p>
+						</div>
+					))}
 			</form>
 		</div>
 	);
