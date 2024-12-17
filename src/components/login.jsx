@@ -22,7 +22,7 @@ function login() {
 			})
 			.then((data) => {
 				console.log(data);
-				setToken(data.token);
+				setToken(data.access_token);
 			})
 			.catch((err) => console.log(err));
 	};
@@ -45,6 +45,8 @@ admin1234
 					onChange={(e) => setPassword(e.target.value)}
 				/>
 				<button type="submit">Login</button>
+
+				<p>{token}</p>
 			</form>
 		</div>
 	);
